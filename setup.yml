@@ -1,10 +1,7 @@
 ---
-- import_playbook: bootstrap.yml
 
 - hosts: tinkerbell
-  # Become root user
   become: yes
-  # List of tasks to be executed
   tasks:
   - name: Install dependencies
     apt:
@@ -15,14 +12,11 @@
         - ifupdown
       state: present
   
-  # - name: Copy netplan
-  #   copy:
-  #     src: netplan.yml
-  #     dest: /etc/netplan/00-installer-config.yaml
-
-  # - name: Apply netplan
-  #   shell:
-  #     cmd: netplan apply
+  - name: Copy OSIE
+    copy:
+      src: osie.tar.gz
+      dest: /root/osie.tar.gz
+    when: copy_osie
 
   - name: Git checkout 
     git:
@@ -34,6 +28,12 @@
     shell: 
       cmd: ./generate-envrc.sh {{ network_interface }} > envrc
       chdir: /root/sandbox
+
+  - name: Add OSIE file location to envrc
+    shell: 
+      cmd: echo 'export TB_OSIE_TAR=/root/osie.tar.gz' >> envrc
+      chdir: /root/sandbox
+    when: copy_osie
   
   - name: Prepare envrc
     shell: 
@@ -48,11 +48,11 @@
   - name: Run setup
     shell: 
       cmd: . ./envrc && ./setup.sh
-      chdir: /root/sandbox          
+      chdir: /root/sandbox
 
   - name: docker-compose up
     shell: 
       cmd: . ../envrc && docker-compose up -d
       chdir: /root/sandbox/deploy
 
-- import_playbook: tinkerbell.yml
+

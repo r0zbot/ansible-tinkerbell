@@ -1,7 +1,5 @@
-- hosts: tinkerbell
-  # Become root user
+- hosts: provisioner
   become: yes
-  # List of tasks to be executed
   tasks:
   # - name: Debug
   #   debug:
@@ -16,7 +14,7 @@
 
   - name: Pull and tag hello world image
     shell: 
-      cmd: . ../envrc && docker pull hello-world && docker tag hello-world 192.168.3.1/hello-world && docker push 192.168.3.1/hello-world
+      cmd: . ../envrc && docker pull hello-world && docker tag hello-world {{ gateway_ip }}/hello-world && docker push {{ gateway_ip }}/hello-world
       chdir: /root/sandbox/deploy
 
   - name: Create hello world template
