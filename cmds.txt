@@ -1,0 +1,6 @@
+cat hardware.json | docker-compose exec -T tink-cli tink hardware push
+
+cd .. 
+
+./setup.sh
+

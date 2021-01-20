@@ -1,0 +1,31 @@
+{ "id":"{{ worker_host['uuid'] }}",
+    "metadata":{
+            "facility":{
+                    "facility_code":"ewr1",
+                    "plan_slug":"c2.medium.x86",
+                    "plan_version_slug":""
+            },
+            "instance":{},
+            "state":"provisioning"
+    },
+    "network":{
+            "interfaces":[
+                    {
+                            "dhcp":{
+                                    "arch":"x86_64",
+                                    "ip":{
+                                            "address":"{{ worker_host['ansible_host'] }}",
+                                            "gateway":"{{ worker_host['gateway'] }}",
+                                            "netmask":"{{ worker_host['netmask'] }}"
+                                    },
+                                    "mac":"{{ worker_host['mac_address'] }}",
+                                    "uefi":false
+                            },
+                            "netboot":{
+                                    "allow_pxe":true,
+                                    "allow_workflow":true
+                            }
+                    }
+            ]
+    }
+}

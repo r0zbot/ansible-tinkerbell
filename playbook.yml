@@ -1,0 +1,58 @@
+---
+- import_playbook: bootstrap.yml
+
+- hosts: tinkerbell
+  # Become root user
+  become: yes
+  # List of tasks to be executed
+  tasks:
+  - name: Install dependencies
+    apt:
+      name: 
+        - docker
+        - docker-compose
+        - jq
+        - ifupdown
+      state: present
+  
+  # - name: Copy netplan
+  #   copy:
+  #     src: netplan.yml
+  #     dest: /etc/netplan/00-installer-config.yaml
+
+  # - name: Apply netplan
+  #   shell:
+  #     cmd: netplan apply
+
+  - name: Git checkout 
+    git:
+      repo: 'https://github.com/tinkerbell/sandbox.git'
+      dest: /root/sandbox
+      version: v0.3.0
+
+  - name: Generate envrc 
+    shell: 
+      cmd: ./generate-envrc.sh {{ network_interface }} > envrc
+      chdir: /root/sandbox
+  
+  - name: Prepare envrc
+    shell: 
+      cmd: sed -i 's/192.168.1/192.168.3/g' envrc
+      chdir: /root/sandbox
+
+  - name: Prepare .env 
+    shell: 
+      cmd: cat envrc | sed 's/export //g' > .env
+      chdir: /root/sandbox
+
+  - name: Run setup
+    shell: 
+      cmd: . ./envrc && ./setup.sh
+      chdir: /root/sandbox          
+
+  - name: docker-compose up
+    shell: 
+      cmd: . ../envrc && docker-compose up -d
+      chdir: /root/sandbox/deploy
+
+- import_playbook: tinkerbell.yml

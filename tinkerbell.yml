@@ -1,0 +1,31 @@
+- hosts: tinkerbell
+  # Become root user
+  become: yes
+  # List of tasks to be executed
+  tasks:
+  # - name: Debug
+  #   debug:
+  #     var: "hostvars[{{ 'item' }}]['mac_address']"
+  #   loop: "{{ groups['worker'] }}"
+
+
+  - name: Copy hello-world template
+    copy:
+      src: hello-world.tmpl
+      dest: /root/sandbox/deploy/hello-world.tmpl
+
+  - name: Pull and tag hello world image
+    shell: 
+      cmd: . ../envrc && docker pull hello-world && docker tag hello-world 192.168.3.1/hello-world && docker push 192.168.3.1/hello-world
+      chdir: /root/sandbox/deploy
+
+  - name: Create hello world template
+    shell: 
+      cmd: ". ../envrc && cat hello-world.tmpl | docker-compose exec -T tink-cli tink template create -n hello-world"
+      chdir: /root/sandbox/deploy
+    ignore_errors: true
+  
+  - include: generate_workflow.yml
+    vars:
+        worker_host: "{{ hostvars[item] }}"
+    with_items: "{{ groups['worker'] }}"
