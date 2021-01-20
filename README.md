@@ -30,3 +30,11 @@ Some inventory variables are required to correctly set up tinkerbell:
 - `template`: Which template should be assigned to this worker when creating a new workflow.
 - `gateway`: IP address of the provisioner. Should probably match `gateway_ip` from above
 - `netmask`: Netmask for the worker's network.
+
+## TODO
+
+- [] Generic templates
+- [] Allow a list of templates to be passed
+- [] Make template generation idempotent
+- [] Make workflow generation idempotent
+- [] Dynamic inventory
