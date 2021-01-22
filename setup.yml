@@ -1,7 +1,10 @@
 ---
 
-- hosts: tinkerbell
+
+- hosts: provisioner
   become: yes
+  vars:
+    - copy_osie: true
   tasks:
   - name: Install dependencies
     apt:
@@ -12,17 +15,18 @@
         - ifupdown
       state: present
   
-  - name: Copy OSIE
-    copy:
-      src: osie.tar.gz
-      dest: /root/osie.tar.gz
-    when: copy_osie
+  # - name: Copy OSIE
+  #   copy:
+  #     src: osie.tar.gz
+  #     dest: /root/osie.tar.gz
+  #   when: copy_osie
 
   - name: Git checkout 
     git:
       repo: 'https://github.com/tinkerbell/sandbox.git'
       dest: /root/sandbox
-      version: v0.3.0
+      force: yes
+      version: v0.4.0
 
   - name: Generate envrc 
     shell: 
@@ -52,7 +56,7 @@
 
   - name: docker-compose up
     shell: 
-      cmd: . ../envrc && docker-compose up -d
+      cmd: . ../envrc && docker-compose down && docker-compose up --force-recreate -d
       chdir: /root/sandbox/deploy
 
 

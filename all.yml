@@ -2,4 +2,5 @@
   # in case we don't have python
 - import_playbook: bootstrap.yml
 - import_playbook: setup.yml
-- import_playbook: template.yml
+- import_playbook: update_templates.yml
+- import_playbook: update_workers.yml

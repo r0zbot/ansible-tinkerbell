@@ -5,11 +5,11 @@ This repo contains some ansible playbooks to help setting up a tinkerbell testin
 - ### boostrap.yml
   This playbook verifies the machine has python installed, and if it doesn't, installs it.
 
-- ### template.yml
-  Initializes the specified template (for now hardcoded to hello-world) to all the hosts under the `worker` group.
+- ### update_workers.yml
+  Creates tinkerbell templates for the templates inside `templates/`.
 
-- ### generate_workflow.yml
-  Helper for `template.yml` that generates the hardware configuration from its template and pushes it, creating a new workflow for it. It should not be run directly.
+- ### update_workers.yml
+  Attributes the template specified in the `template` variable to each host under the `worker` group by creating a workflow for it.
 
 - ### setup.yml
   Sets up the environment and runs `setup.sh`, which pulls all the images and downloads OSIE. If `copy_osie: true`, then instead of downloading OSIE it copies it from the ansible host. It also starts all services included in the `docker-compose.yml` file.
@@ -33,8 +33,10 @@ Some inventory variables are required to correctly set up tinkerbell:
 
 ## TODO
 
-- [] Generic templates
+- [] docker-compose up as a handler
+- [x] Generic templates
 - [] Allow a list of templates to be passed
 - [] Make template generation idempotent
 - [] Make workflow generation idempotent
 - [] Dynamic inventory
+- [] Maybe organize into roles?

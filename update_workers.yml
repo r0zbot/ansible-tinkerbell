@@ -1,0 +1,7 @@
+- hosts: provisioner
+  become: yes
+  tasks:
+  - include: helper_tasks/generate_workflow.yml
+    vars:
+        worker_host: "{{ hostvars[item] }}"
+    with_items: "{{ groups['worker'] }}"

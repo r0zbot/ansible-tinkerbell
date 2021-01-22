@@ -1,0 +1,24 @@
+- name: "Copy {{template_name}} template"
+  copy:
+    src: "templates/{{template_name}}.tmpl"
+    dest: /root/sandbox/deploy/{{template_name}}.tmpl
+
+- name: Parse needed images from template
+  shell:
+    cmd: "jq -r .tasks[].actions[].image"
+    stdin: "{{ lookup('file', 'templates/'+template_name+'.tmpl') | from_yaml | to_json  }}"
+  register: needed_images 
+
+- include: helper_tasks/pull_image.yml
+  vars:
+    image_name: "{{inner_item}}"
+  with_items: "{{needed_images.stdout_lines}}"
+  loop_control:
+    loop_var: inner_item
+
+
+- name: "Create {{template_name}} template"
+  shell: 
+    cmd: ". ../envrc && cat {{template_name}}.tmpl | docker-compose exec -T tink-cli tink template create -n {{template_name}}"
+    chdir: /root/sandbox/deploy
+  ignore_errors: true

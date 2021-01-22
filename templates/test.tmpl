@@ -1,0 +1,13 @@
+version: "0.1"
+name: test_workflow
+global_timeout: 600
+tasks:
+  - name: "test1"
+    worker: "{{.device_1}}"
+    actions:
+      - name: "new hello"
+        image: u1ih/hello
+        timeout: 60
+      - name: "alpine"
+        image: alpine
+        timeout: 60

@@ -1,12 +1,14 @@
 
 [provisioner]
-provisioner_host     ansible_host=192.168.1.125 ansible_user=root network_interface=ens33 gateway_ip=192.168.3.1
+provisioner_host     ansible_host=192.168.1.125 ansible_user=root network_interface=enx000ec6c61e15 gateway_ip=192.168.3.1
 #provisioner     ansible_host=192.168.1.125 ansible_user=root network_interface=enx000ec6c61e15 gateway_ip=192.168.3.1
 
 [worker]
 debora_vaio     ansible_host=192.168.3.15 mac_address="f0:bf:97:45:e1:e6" uuid="0fba0bf8-3772-4b4a-ab9f-6ebe93b90a94" template=hello-world
 idk             ansible_host=192.168.3.16 mac_address="00:90:f5:a3:35:6e" uuid="f3df6e3c-910e-4740-8481-6b92b3a706b7" template=hello-world
 vbox_worker     ansible_host=192.168.3.17 mac_address="08:00:27:c9:08:d2" uuid="a37978d4-cf52-47bc-91f2-4e1f5f1d83f9" template=hello-world
+vmware_worker   ansible_host=192.168.3.18 mac_address="00:0c:29:ae:c9:d7" uuid="979d736c-bde6-4b0d-8550-c7a96fa5e15c" template=hello-world
+vmware_worker2  ansible_host=192.168.3.19 mac_address="00:0c:29:d0:2d:32" uuid="13fe3ac5-e107-4719-97bf-7389f99b3740" template=hello-world
 
 
 [worker:vars]
