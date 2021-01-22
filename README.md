@@ -33,10 +33,10 @@ Some inventory variables are required to correctly set up tinkerbell:
 
 ## TODO
 
-- [] docker-compose up as a handler
+- [ ] docker-compose up as a handler
 - [x] Generic templates
-- [] Allow a list of templates to be passed
-- [] Make template generation idempotent
-- [] Make workflow generation idempotent
-- [] Dynamic inventory
-- [] Maybe organize into roles?
+- [ ] Allow a list of templates to be passed
+- [ ] Make template generation idempotent
+- [ ] Make workflow generation idempotent
+- [ ] Dynamic inventory
+- [ ] Maybe organize into roles?
