@@ -40,9 +40,10 @@
     when: copy_osie
   
   - name: Prepare envrc
-    shell: 
-      cmd: sed -i 's/192.168.1/192.168.3/g' envrc
-      chdir: /root/sandbox
+    replace: 
+      regexp: "192.168.1"
+      replace: "192.168.3"
+      path: /root/sandbox/envrc
 
   - name: Prepare .env 
     shell: 

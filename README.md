@@ -5,8 +5,8 @@ This repo contains some ansible playbooks to help setting up a tinkerbell testin
 - ### boostrap.yml
   This playbook verifies the machine has python installed, and if it doesn't, installs it.
 
-- ### update_workers.yml
-  Creates tinkerbell templates for the templates inside `templates/`.
+- ### update_templates.yml
+  Creates tinkerbell templates for the templates inside `templates/`. **Make sure the files don't contain any spaces!"
 
 - ### update_workers.yml
   Attributes the template specified in the `template` variable to each host under the `worker` group by creating a workflow for it.

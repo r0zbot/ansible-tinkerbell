@@ -1,6 +1,6 @@
-- name: Debug
-  debug:
-    var: image_name
+# - name: Debug
+#   debug:
+#     var: image_name
   # loop: "{{ groups['worker'] }}"
 - name: "Pull and tag {{image_name}} image"
   shell: 

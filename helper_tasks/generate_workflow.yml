@@ -1,9 +1,9 @@
-- name: Debug
-  debug:
-    var: worker_host
+# - name: Debug
+#   debug:
+#     var: worker_host
   # loop: "{{ groups['worker'] }}"
 
-- name: Template hardware.json
+- name: "Template hardware.json for {{worker_host['inventory_hostname']}}"
   template:
     src: hardware.json.j2
     dest: /root/sandbox/deploy/hardware.json
@@ -13,13 +13,12 @@
     cmd: . ../envrc && cat hardware.json | docker-compose exec -T tink-cli tink hardware push
     chdir: /root/sandbox/deploy
 
-- name: Extract uuid for template {{ worker_host['template'] }}
-  shell: 
-    cmd: ". ../envrc && docker-compose exec -T tink-cli tink template list | grep {{ worker_host['template'] }} | cut -d '|' -f 2"
-    chdir: /root/sandbox/deploy
+- include: helper_tasks/template_uuid.yml
   register: template_uuid
-  
-- name: Create workflow for template {{ worker_host['template'] }}
+  vars:
+    template_name: "{{ worker_host['template'] }}"
+
+- name: Create workflow for {{worker_host['inventory_hostname']}} using template {{ worker_host['template'] }}
   shell: 
     cmd: ". ../envrc && cat hardware.json | docker-compose exec -T tink-cli tink workflow create -t {{ template_uuid.stdout }} -r '{\"device_1\":\"{{ worker_host['mac_address'] }}\"}'"
     chdir: /root/sandbox/deploy

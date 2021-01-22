@@ -1,0 +1,5 @@
+- name: Extract uuid for template {{ template_name }}
+  shell: 
+    cmd: ". ../envrc && docker-compose exec -T tink-cli tink template list | grep ' {{ template_name }} ' | cut -d '|' -f 2"
+    chdir: /root/sandbox/deploy
+  register: template_uuid

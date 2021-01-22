@@ -16,9 +16,16 @@
   loop_control:
     loop_var: inner_item
 
+- include: helper_tasks/template_uuid.yml
+  register: template_uuid
+
+- name: "Delete old {{template_name}} template"
+  shell: 
+    cmd: ". ../envrc && docker-compose exec -T tink-cli tink template delete {{ template_uuid.stdout }}"
+    chdir: /root/sandbox/deploy
+  when: template_uuid.stdout != ""
 
 - name: "Create {{template_name}} template"
   shell: 
     cmd: ". ../envrc && cat {{template_name}}.tmpl | docker-compose exec -T tink-cli tink template create -n {{template_name}}"
     chdir: /root/sandbox/deploy
-  ignore_errors: true

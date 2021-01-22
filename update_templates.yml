@@ -6,19 +6,3 @@
         template_name: "{{ item | basename | splitext | first }}"
     with_fileglob:
     - "templates/*.tmpl"
-
-  # - name: Copy hello-world template
-  #   copy:
-  #     src: hello-world.tmpl
-  #     dest: /root/sandbox/deploy/hello-world.tmpl
-
-  # - name: Pull and tag hello world image
-  #   shell: 
-  #     cmd: . ../envrc && docker pull hello-world && docker tag hello-world {{ gateway_ip }}/hello-world && docker push {{ gateway_ip }}/hello-world
-  #     chdir: /root/sandbox/deploy
-
-  # - name: Create hello world template
-  #   shell: 
-  #     cmd: ". ../envrc && cat hello-world.tmpl | docker-compose exec -T tink-cli tink template create -n hello-world"
-  #     chdir: /root/sandbox/deploy
-  #   ignore_errors: true
